@@ -20,9 +20,12 @@ describe('StackTraceParserService', () => {
       expect(result.errorType).toBe('TypeError');
       expect(result.errorMessage).toBe("Cannot read property 'map' of undefined");
       expect(result.frames.length).toBeGreaterThan(0);
-      expect(result.frames[0].filePath).toContain('UserService.ts');
-      expect(result.frames[0].lineNumber).toBe(45);
-      expect(result.frames[0].isUserCode).toBe(true);
+      
+      const firstFrame = result.frames[0];
+      expect(firstFrame).toBeDefined();
+      expect(firstFrame?.filePath).toContain('UserService.ts');
+      expect(firstFrame?.lineNumber).toBe(45);
+      expect(firstFrame?.isUserCode).toBe(true);
     });
 
     it('should parse Python stack traces', () => {
@@ -37,7 +40,7 @@ ValueError: Invalid JSON`;
 
       expect(result.language).toBe('python');
       expect(result.frames.length).toBeGreaterThan(0);
-      expect(result.frames[0].filePath).toContain('.py');
+      expect(result.frames[0]?.filePath).toContain('.py');
     });
 
     it('should identify user code vs library code', () => {
